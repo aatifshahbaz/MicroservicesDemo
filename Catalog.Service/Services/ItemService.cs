@@ -6,10 +6,10 @@ namespace Catalog.Service.Services
 {
     public class ItemService : IItemService
     {
-        private readonly IItemRepository _itemRepository;
+        private readonly IRepository<Item> _itemRepository;
         private readonly IMapper _mapper;
 
-        public ItemService(IItemRepository itemRepository, IMapper mapper)
+        public ItemService(IRepository<Item> itemRepository, IMapper mapper)
         {
             _itemRepository = itemRepository;
             _mapper = mapper;

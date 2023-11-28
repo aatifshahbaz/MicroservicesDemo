@@ -1,7 +1,9 @@
 using Catalog.Service.Data;
+using Catalog.Service.Models;
 using Catalog.Service.Repositories;
 using Catalog.Service.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Catalog.Service
 {
@@ -13,6 +15,8 @@ namespace Catalog.Service
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             var migrationAssembly = typeof(Program).Assembly.GetName().Name;
+            //var migrationAssembly2 = Assembly.GetExecutingAssembly().GetName().Name;
+            //var migrationAssembly3 = Assembly.GetEntryAssembly().GetName().Name;
             // Add services to the container.
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -22,7 +26,7 @@ namespace Catalog.Service
 
             builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
-            builder.Services.AddTransient<IItemRepository, ItemRepository>();
+            builder.Services.AddTransient<IRepository<Item>, SqlRepository<Item>>();
             builder.Services.AddScoped<IItemService, ItemService>();
 
             builder.Services.AddControllers();
