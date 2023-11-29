@@ -13,16 +13,7 @@ namespace Catalog.Service
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            var migrationAssembly = typeof(Program).Assembly.GetName().Name;
-            //var migrationAssembly2 = Assembly.GetExecutingAssembly().GetName().Name;
-            //var migrationAssembly3 = Assembly.GetEntryAssembly().GetName().Name;
-            // Add services to the container.
-
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlite(connectionString, sqlOpts => sqlOpts.MigrationsAssembly(migrationAssembly));
-            });
+            builder.Services.AddSqlite<ApplicationDbContext>();
 
             builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
