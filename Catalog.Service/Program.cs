@@ -13,11 +13,12 @@ namespace Catalog.Service
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddSqlite<ApplicationDbContext>();
-
             builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
-            builder.Services.AddTransient<IRepository<Item>, SqlRepository<Item>>();
+            builder.Services.AddSqlite<ApplicationDbContext>()
+                            .AddRepository<Item>();
+
+            //Cannot generalize services via extensions, because each service use different entity and different repository
             builder.Services.AddScoped<IItemService, ItemService>();
 
             builder.Services.AddControllers();

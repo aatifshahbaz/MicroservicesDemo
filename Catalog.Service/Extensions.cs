@@ -1,4 +1,6 @@
 ﻿using Catalog.Service.Data;
+using Catalog.Service.Models;
+using Catalog.Service.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -27,7 +29,11 @@ namespace Catalog.Service
 
 
 
-
+        public static IServiceCollection AddRepository<T>(this IServiceCollection services) where T : class, IEntity
+        {
+            services.AddTransient<IRepository<T>, SqlRepository<T>>();
+            return services;
+        }
 
         //public static void RegisterAllEntities<IEntity>(this ModelBuilder modelBuilder, params Assembly[] assemblies)
         //{
