@@ -1,9 +1,8 @@
-﻿using Catalog.Service.Data;
-using Catalog.Service.Models;
+﻿using Common.Data;
+using Common.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Catalog.Service.Repositories
+namespace Common.Repository
 {
     public class SqlRepository<T> : IRepository<T> where T : class, IEntity
     {
@@ -29,29 +28,20 @@ namespace Catalog.Service.Repositories
 
         public bool Create(T entity)
         {
-            //It will mark the Entity state as Added State
             _table.Add(entity);
-
             return _context.SaveChanges() > 0;
         }
 
 
         public bool Update(T entity)
         {
-            //First attach the object to the table
-            //_table.Attach(entity);
-            //Then set the state of the Entity as Modified
-            //_context.Entry(entity).State = EntityState.Modified;
             _table.Update(entity);
             return _context.SaveChanges() > 0;
         }
+
         public bool Delete(T entity)
         {
-            //First, fetch the record from the table
-            T existing = _table.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-            //This will mark the Entity State as Deleted
-            _table.Remove(existing);
-
+            _table.Remove(entity);
             return _context.SaveChanges() > 0;
         }
 

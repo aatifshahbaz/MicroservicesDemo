@@ -1,6 +1,6 @@
-﻿using Catalog.Service.Models;
+﻿using Common.Entity;
 
-namespace Catalog.Service.Repositories
+namespace Common.Repository
 {
     public interface IRepository<T> where T : IEntity
     {

@@ -1,4 +1,6 @@
-﻿namespace Catalog.Service.Models
+﻿using Common.Entity;
+
+namespace Catalog.Service.Models
 {
     public class Item : IEntity
     {

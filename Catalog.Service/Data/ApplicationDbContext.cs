@@ -1,7 +1,6 @@
 ﻿using Catalog.Service.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Common.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace Catalog.Service.Data
 {
@@ -13,16 +12,5 @@ namespace Catalog.Service.Data
         }
 
         public DbSet<Item> Items { get; set; }
-
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
-
-        //    var entitiesAssembly = Assembly.GetEntryAssembly(); // typeof(IEntity).Assembly;
-        //    modelBuilder.RegisterAllEntities<IEntity>(entitiesAssembly);
-        //}
-
-
     }
 }

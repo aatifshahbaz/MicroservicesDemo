@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Catalog.Service.Models;
-using Catalog.Service.Repositories;
+using Common.Repository;
 
 namespace Catalog.Service.Services
 {

@@ -1,9 +1,9 @@
 using Catalog.Service.Data;
 using Catalog.Service.Models;
-using Catalog.Service.Repositories;
 using Catalog.Service.Services;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+using Common.Data;
+using Common.Repository;
+
 
 namespace Catalog.Service
 {

@@ -1,4 +1,4 @@
-﻿namespace Catalog.Service.Models
+﻿namespace Common.Entity
 {
     public interface IEntity
     {

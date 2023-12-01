@@ -1,10 +1,9 @@
-﻿using Catalog.Service.Data;
-using Catalog.Service.Models;
-using Catalog.Service.Repositories;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Catalog.Service
+namespace Common.Data
 {
     public static class Extensions
     {
@@ -29,26 +28,6 @@ namespace Catalog.Service
 
             return services;
         }
-
-
-
-        public static IServiceCollection AddRepository<T>(this IServiceCollection services) where T : class, IEntity
-        {
-            services.AddTransient<IRepository<T>, SqlRepository<T>>();
-            return services;
-        }
-
-        //public static void RegisterAllEntities<IEntity>(this ModelBuilder modelBuilder, params Assembly[] assemblies)
-        //{
-        //    IEnumerable<Type> types = assemblies.SelectMany(a => a.GetExportedTypes())
-        //    .Where(c => c.IsClass && !c.IsAbstract && c.IsPublic);
-
-        //    foreach (Type type in types)
-        //    {
-        //        if (type.GetInterfaces().Contains(typeof(IEntity)))
-        //            modelBuilder.Entity(type);
-        //    }
-        //}
 
     }
 }

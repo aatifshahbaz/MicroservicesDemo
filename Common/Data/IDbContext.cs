@@ -1,7 +1,6 @@
-﻿using Catalog.Service.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Service.Data
+namespace Common.Data
 {
     public interface IDbContext
     {
