@@ -19,12 +19,12 @@ namespace Catalog.Service.Services
         {
             var items = _itemRepository.Get();
 
-            return items != null ? _mapper.Map<List<ItemDto>>(items) : null;
+            return items.Count > 0 ? _mapper.Map<List<ItemDto>>(items) : null;
         }
 
         public ItemDto GetById(Guid id)
         {
-            var item = _itemRepository.GetById(id);
+            var item = _itemRepository.GetBy(id);
             return item != null ? _mapper.Map<ItemDto>(item) : null;
         }
         public ItemDto Create(CreateItemDto dto)
@@ -38,7 +38,7 @@ namespace Catalog.Service.Services
 
         public bool Update(Guid id, UpdateItemDto dto)
         {
-            var existingItem = _itemRepository.GetById(id);
+            var existingItem = _itemRepository.GetBy(id);
 
             if (existingItem != null)
             {
@@ -53,7 +53,7 @@ namespace Catalog.Service.Services
 
         public bool Delete(Guid id)
         {
-            var existingItem = _itemRepository.GetById(id);
+            var existingItem = _itemRepository.GetBy(id);
 
             if (existingItem != null)
                 return _itemRepository.Delete(existingItem);

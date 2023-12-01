@@ -1,6 +1,6 @@
 ﻿- Create nuget package using following command
-> dotnet pack -o <output directory> --version-suffix <version number>
-> dotnet pack -o ../../packages --version-suffix 1.0.0
+> dotnet pack -o <output directory> -p:PackageVersion=<version number>
+> dotnet pack -o ../../packages -p:PackageVersion=1.0.0
 
 - Add above local package directory to nuget registry using following command
 > dotnet nuget add source <local nuget package directory> -n <suitable name for registry>

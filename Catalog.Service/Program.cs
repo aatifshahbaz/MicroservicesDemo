@@ -15,7 +15,7 @@ namespace Catalog.Service
 
             builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
-            builder.Services.AddSqlite<ApplicationDbContext>()
+            builder.Services.AddSqlite<CatalogDbContext>()
                             .AddRepository<Item>();
 
             //Cannot generalize services via extensions, because each service use different entity and different repository

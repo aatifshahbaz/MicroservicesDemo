@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Catalog.Service.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(CatalogDbContext))]
     [Migration("20231124111436_AddedItemsTable")]
     partial class AddedItemsTable
     {

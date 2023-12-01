@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Service.Data
 {
-    public class ApplicationDbContext : DbContext, IDbContext
+    public class CatalogDbContext : DbContext, IDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options)
         {
 
         }

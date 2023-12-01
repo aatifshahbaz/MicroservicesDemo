@@ -1,6 +1,7 @@
 ﻿using Common.Data;
 using Common.Entity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Common.Repository
 {
@@ -21,9 +22,19 @@ namespace Common.Repository
             return _table.ToList();
         }
 
-        public T GetById(Guid id)
+        public List<T> Get(Expression<Func<T, bool>> filter)
+        {
+            return _table.Where(filter).ToList();
+        }
+
+        public T GetBy(Guid id)
         {
             return _table.AsNoTracking().FirstOrDefault(e => e.Id == id);
+        }
+
+        public T GetBy(Expression<Func<T, bool>> filter)
+        {
+            return _table.AsNoTracking().FirstOrDefault(filter);
         }
 
         public bool Create(T entity)
@@ -44,6 +55,5 @@ namespace Common.Repository
             _table.Remove(entity);
             return _context.SaveChanges() > 0;
         }
-
     }
 }
