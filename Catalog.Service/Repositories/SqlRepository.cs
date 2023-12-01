@@ -8,9 +8,9 @@ namespace Catalog.Service.Repositories
     public class SqlRepository<T> : IRepository<T> where T : class, IEntity
     {
         private readonly DbSet<T> _table = null;
-        private readonly ApplicationDbContext _context;
+        private readonly IDbContext _context;
 
-        public SqlRepository(ApplicationDbContext context)
+        public SqlRepository(IDbContext context)
         {
             _context = context;
             _table = context.Set<T>();
@@ -39,10 +39,10 @@ namespace Catalog.Service.Repositories
         public bool Update(T entity)
         {
             //First attach the object to the table
-            _table.Attach(entity);
+            //_table.Attach(entity);
             //Then set the state of the Entity as Modified
-            _context.Entry(entity).State = EntityState.Modified;
-
+            //_context.Entry(entity).State = EntityState.Modified;
+            _table.Update(entity);
             return _context.SaveChanges() > 0;
         }
         public bool Delete(T entity)

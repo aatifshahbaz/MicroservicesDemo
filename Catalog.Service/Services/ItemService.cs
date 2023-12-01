@@ -44,7 +44,7 @@ namespace Catalog.Service.Services
             {
                 var item = _mapper.Map<Item>(dto);
                 item.Id = existingItem.Id;
-                item.CreatedDate = DateTime.UtcNow;
+                item.CreatedDate = existingItem.CreatedDate;
                 return _itemRepository.Update(item);
             }
 

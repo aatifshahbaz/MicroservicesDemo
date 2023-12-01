@@ -8,7 +8,7 @@ namespace Catalog.Service
 {
     public static class Extensions
     {
-        public static IServiceCollection AddSqlite<T>(this IServiceCollection services) where T : DbContext
+        public static IServiceCollection AddSqlite<T>(this IServiceCollection services) where T : DbContext, IDbContext
         {
             //All below returns same in this context
             //var migrationAssembly = typeof(Program).Assembly.GetName().Name;
@@ -23,6 +23,9 @@ namespace Catalog.Service
             {
                 options.UseSqlite(connectionString, sqlOpts => sqlOpts.MigrationsAssembly(migrationAssembly));
             });
+
+            //Injecting already registered CustomDbContext as IDbContext for SqlRepository to Consume it
+            services.AddTransient<IDbContext>(provider => provider.GetService<T>());
 
             return services;
         }
