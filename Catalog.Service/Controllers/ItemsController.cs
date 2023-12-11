@@ -1,4 +1,7 @@
-﻿using Catalog.Service.Services;
+﻿using Catalog.Contracts;
+using Catalog.Service.Models;
+using Catalog.Service.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,10 +13,12 @@ namespace Catalog.Service.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly IItemService _itemService;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public ItemsController(IItemService itemService)
+        public ItemsController(IItemService itemService, IPublishEndpoint publishEndpoint)
         {
             _itemService = itemService;
+            _publishEndpoint = publishEndpoint;
         }
         // GET: api/<ItemsController>
         [HttpGet]
@@ -35,7 +40,13 @@ namespace Catalog.Service.Controllers
         public ActionResult<ItemDto> Post([FromBody] CreateItemDto value)
         {
             var item = _itemService.Create(value);
-            return item != null ? CreatedAtAction(nameof(GetById), new { id = item.Id }, item) : BadRequest();
+
+            if (item == null)
+                return BadRequest();
+
+            _publishEndpoint.Publish(new CatalogItemCreated(item.Id, item.Name, item.Description));
+
+            return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
         }
 
         // PUT api/<ItemsController>/5
@@ -44,14 +55,26 @@ namespace Catalog.Service.Controllers
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Put(Guid id, [FromBody] UpdateItemDto value)
         {
-            return _itemService.Update(id, value) ? Ok(value) : NotFound();
+            var updated = _itemService.Update(id, value);
+
+            if (!updated)
+                return NotFound();
+
+            _publishEndpoint.Publish(new CatalogItemUpdated(id, value.Name, value.Description));
+            return Ok(value);
         }
 
         // DELETE api/<ItemsController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            return _itemService.Delete(id) ? NoContent() : NotFound();
+            var deleted = _itemService.Delete(id);
+
+            if (!deleted)
+                return NotFound();
+
+            _publishEndpoint.Publish(new CatalogItemDeleted(id));
+            return NoContent();
         }
     }
 }

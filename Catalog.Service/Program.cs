@@ -2,6 +2,7 @@ using Catalog.Service.Data;
 using Catalog.Service.Models;
 using Catalog.Service.Services;
 using Common.Data;
+using Common.MassTransit;
 using Common.Repository;
 
 
@@ -16,7 +17,8 @@ namespace Catalog.Service
             builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
             builder.Services.AddSqlite<CatalogDbContext>()
-                            .AddRepository<Item>();
+                            .AddRepository<Item>()
+                            .AddMassTransitWithRabbitMQ();
 
             //Cannot generalize services via extensions, because each service use different entity and different repository
             builder.Services.AddScoped<IItemService, ItemService>();

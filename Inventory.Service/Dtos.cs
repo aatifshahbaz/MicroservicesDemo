@@ -6,4 +6,7 @@ namespace Inventory.Service
     public record InventoryItemDto(Guid CatalogItemId, int Quantity, DateTimeOffset AcquiredDate);
 
     public record GrantItemDto([Required] Guid UserId, [Required] Guid CatalogItemId, [Range(0, 100)] int Quantity);
+
+    public record CatalogItemDto(Guid Id, string Name, string Description);
+
 }

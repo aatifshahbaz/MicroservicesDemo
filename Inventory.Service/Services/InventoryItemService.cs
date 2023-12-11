@@ -29,7 +29,7 @@ namespace Inventory.Service.Services
             var inventoryItem = _invItemRepository
                 .GetBy(i => i.UserId == dto.UserId && i.CatalogItemId == dto.CatalogItemId);
 
-            if (inventoryItem != null)
+            if (inventoryItem == null)
             {
                 var item = _mapper.Map<InventoryItem>(dto);
                 item.Id = Guid.NewGuid();

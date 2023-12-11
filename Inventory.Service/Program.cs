@@ -1,4 +1,5 @@
 using Common.Data;
+using Common.MassTransit;
 using Common.Repository;
 using Inventory.Service;
 using Inventory.Service.Data;
@@ -12,7 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 builder.Services.AddSqlite<InventoryDbContext>()
-                .AddRepository<InventoryItem>();
+                .AddRepository<InventoryItem>()
+                .AddMassTransitWithRabbitMQ();
 
 //Cannot generalize services via extensions, because each service use different entity and different repository
 builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
