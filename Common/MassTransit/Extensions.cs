@@ -46,7 +46,10 @@ namespace Common.MassTransit
                         }
                     });
 
-                    //Retry if consumer stuck or timeout due to anyreason
+                    //Retry is useful when exception occured due to temporal failures and retrying might eventually solve the problem
+                    //Following and more middlewares kicked-in whenever any exception is encounterd in classes that implements IConsumer
+                    //Read for more details https://masstransit.io/documentation/concepts/exceptions
+
                     configurator.UseMessageRetry(retryConf =>
                     {
                         retryConf.Interval(3, TimeSpan.FromSeconds(5));
