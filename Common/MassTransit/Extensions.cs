@@ -27,19 +27,24 @@ namespace Common.MassTransit
                     var serviceSettings = configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>(); //Install this for Get<T> Microsoft.Extensions.Configuration.Binder
                     var rabbitMQSettings = configuration.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>();
 
-                    var uri = new Uri($"amqps://{rabbitMQSettings.UserName}:{rabbitMQSettings.Password}@{rabbitMQSettings.Host}/{rabbitMQSettings.VHost}");
+                    //Bydefault amqps uses port 5671 and amqp uses port 5672, so we dont have to mention it while using URI for configuring HOST
+                    //var uri = new Uri($"amqps://{rabbitMQSettings.UserName}:{rabbitMQSettings.Password}@{rabbitMQSettings.Host}/{rabbitMQSettings.VHost}");
+                    //configurator.Host(uri);
 
-                    configurator.Host(uri);
 
-                    //configurator.Host(rabbitMQSettings.Host, rabbitMQSettings.VHost, host =>
-                    //{
-                    //    host.Username(rabbitMQSettings.UserName);
-                    //    host.Password(rabbitMQSettings.Password);
-                    //    host.UseSsl(s =>
-                    //    {
-                    //        s.Protocol = SslProtocols.Tls12;
-                    //    });
-                    //});
+                    configurator.Host(rabbitMQSettings.Host, rabbitMQSettings.Port, rabbitMQSettings.VHost, host =>
+                    {
+                        host.Username(rabbitMQSettings.UserName);
+                        host.Password(rabbitMQSettings.Password);
+
+                        if (rabbitMQSettings.Port == 5671)
+                        {
+                            host.UseSsl(s =>
+                            {
+                                s.Protocol = SslProtocols.Tls12;
+                            });
+                        }
+                    });
 
                     configurator.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false));
                 });

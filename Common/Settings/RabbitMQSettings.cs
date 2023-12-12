@@ -9,7 +9,7 @@ namespace Common.Setting
     public class RabbitMQSettings
     {
         public string Host { get; init; }
-        public ushort? Port { get; init; }
+        public ushort Port { get; init; }
         public string UserName { get; init; }
         public string Password { get; init; }
         public string? VHost { get; init; }
