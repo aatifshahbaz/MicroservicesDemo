@@ -46,6 +46,12 @@ namespace Common.MassTransit
                         }
                     });
 
+                    //Retry if consumer stuck or timeout due to anyreason
+                    configurator.UseMessageRetry(retryConf =>
+                    {
+                        retryConf.Interval(3, TimeSpan.FromSeconds(5));
+                    });
+
                     configurator.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false));
                 });
             });

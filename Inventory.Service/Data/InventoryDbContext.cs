@@ -12,5 +12,6 @@ namespace Inventory.Service.Data
         }
 
         public DbSet<InventoryItem> InventoryItems { get; set; }
+        public DbSet<CatalogItem> CatalogItems { get; set; }
     }
 }

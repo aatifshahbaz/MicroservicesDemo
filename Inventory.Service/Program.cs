@@ -14,6 +14,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 builder.Services.AddSqlite<InventoryDbContext>()
                 .AddRepository<InventoryItem>()
+                .AddRepository<CatalogItem>()
                 .AddMassTransitWithRabbitMQ();
 
 //Cannot generalize services via extensions, because each service use different entity and different repository

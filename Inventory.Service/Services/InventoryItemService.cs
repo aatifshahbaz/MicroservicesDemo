@@ -8,19 +8,39 @@ namespace Inventory.Service.Services
     public class InventoryItemService : IInventoryItemService
     {
         private readonly IRepository<InventoryItem> _invItemRepository;
+        private readonly IRepository<CatalogItem> _catalogItemRepository;
         private readonly IMapper _mapper;
 
-        public InventoryItemService(IRepository<InventoryItem> invItemRepository, IMapper mapper)
+        public InventoryItemService(IMapper mapper, IRepository<InventoryItem> invItemRepository, IRepository<CatalogItem> catalogItemRepository)
         {
-            _invItemRepository = invItemRepository;
             _mapper = mapper;
+            _invItemRepository = invItemRepository;
+            _catalogItemRepository = catalogItemRepository;
         }
 
         public List<InventoryItemDto> Get(Guid userId)
         {
-            var items = _invItemRepository.Get(item => item.UserId == userId);
+            var catalogItems = _catalogItemRepository.Get();
+            var inventoryItems = _invItemRepository.Get(item => item.UserId == userId);
 
-            return items.Count > 0 ? _mapper.Map<List<InventoryItemDto>>(items) : null;
+            if (inventoryItems == null)
+                return null;
+
+            var inventoryItemDto = inventoryItems.Select(inventoryItem =>
+            {
+                var catalogItem = catalogItems.Single(catalogItem => catalogItem.Id == inventoryItem.CatalogItemId);
+
+                return _mapper.Map<InventoryItem, InventoryItemDto>(inventoryItem, options =>
+                {
+                    options.AfterMap((src, dest) =>
+                    {
+                        dest.Name = catalogItem.Name;
+                        dest.Description = catalogItem.Description;
+                    });
+                });
+            });
+
+            return inventoryItemDto.ToList();
         }
 
 
@@ -42,8 +62,6 @@ namespace Inventory.Service.Services
                 inventoryItem.Quantity += dto.Quantity;
                 return _invItemRepository.Update(inventoryItem);
             }
-
-
         }
     }
 }
