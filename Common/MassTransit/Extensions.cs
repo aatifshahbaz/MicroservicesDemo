@@ -1,15 +1,9 @@
 ﻿using Common.Setting;
 using MassTransit;
-using MassTransit.Transports.Fabric;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Security.Authentication;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.MassTransit
 {
@@ -59,7 +53,43 @@ namespace Common.MassTransit
                 });
             });
 
-            services.AddMassTransitHostedService();
+            //Deprecated after MassTransit v8, no need to do it manually, its will register Bus automatically
+            //services.AddMassTransitHostedService();
+
+            return services;
+        }
+
+
+        public static IServiceCollection AddMassTransitWithAzureServiceBus(this IServiceCollection services)
+        {
+            services.AddMassTransit(configure =>
+            {
+                configure.AddConsumers(Assembly.GetEntryAssembly());
+
+                configure.UsingAzureServiceBus((context, configurator) =>
+                {
+                    var configuration = context.GetService<IConfiguration>();
+                    var azureServiceBus = configuration.GetConnectionString("AzureServiceBus");
+                    var serviceSettings = configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>(); //Install this for Get<T> Microsoft.Extensions.Configuration.Binder
+
+                    configurator.Host(azureServiceBus);
+
+                    configurator.UseMessageRetry(retryConf =>
+                    {
+                        retryConf.Interval(3, TimeSpan.FromSeconds(5));
+                    });
+
+                    //It will auto create the relevent Topics, Subscriptions and Queues, no need to do it manually, it will complicate things
+                    //Whenever any message is published at topic, it will be forwarded to respective subscrption for subscriber to consume it.
+                    //You wont be able to view any message in Topic, it just forward the messages to all active subscribers
+                    //If auto-forward queue is enabled in Subcription, you will be able to view that message via Service Bus Explorer on that Queue
+                    //Once that message is consumed by any Subscriber, it will be deleted from Queue as well.
+                    configurator.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false));
+                });
+            });
+
+            //Deprecated after MassTransit v8, no need to do it manually, its will register Bus automatically
+            //services.AddMassTransitHostedService();
 
             return services;
         }

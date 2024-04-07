@@ -18,7 +18,9 @@ namespace Catalog.Service
 
             builder.Services.AddSqlite<CatalogDbContext>()
                             .AddRepository<Item>()
-                            .AddMassTransitWithRabbitMQ();
+                            .AddMassTransitWithAzureServiceBus(); //Using Azure Service Bus instead of RabbitMQ
+                                                                  //.AddMassTransitWithRabbitMQ();
+
 
             //Cannot generalize services via extensions, because each service use different entity and different repository
             builder.Services.AddScoped<IItemService, ItemService>();

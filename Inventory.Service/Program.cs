@@ -5,7 +5,6 @@ using Inventory.Service;
 using Inventory.Service.Data;
 using Inventory.Service.Models;
 using Inventory.Service.Services;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +14,9 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles));
 builder.Services.AddSqlite<InventoryDbContext>()
                 .AddRepository<InventoryItem>()
                 .AddRepository<CatalogItem>()
-                .AddMassTransitWithRabbitMQ();
+                .AddMassTransitWithAzureServiceBus(); //Using Azure Service Bus instead of RabbitMQ
+                                                      //.AddMassTransitWithRabbitMQ();
+
 
 //Cannot generalize services via extensions, because each service use different entity and different repository
 builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();

@@ -1,5 +1,4 @@
 ﻿using Catalog.Contracts;
-using Catalog.Service.Models;
 using Catalog.Service.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
