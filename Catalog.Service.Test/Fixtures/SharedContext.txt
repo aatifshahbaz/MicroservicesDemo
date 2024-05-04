@@ -1,0 +1,8 @@
+It is common for unit test classes to share setup and cleanup code (often called "test context"). 
+xUnit.net offers several methods for sharing this setup and cleanup code, depending on the scope of things to be shared, 
+as well as the expense associated with the setup and cleanup code.
+
+- Constructor and Dispose (shared setup/cleanup code without sharing object instances)
+- Class Fixtures (shared object instance across tests in a single class)
+- Collection Fixtures (shared object instances across multiple test classes)
+- Assembly Fixtures (shared object instances across the entire test assembly)

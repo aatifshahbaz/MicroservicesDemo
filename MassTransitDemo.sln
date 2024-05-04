@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Service", "Inventory.Service\Inventory.Service.csproj", "{1A7A79A8-B2C6-40EA-9069-1F294042B96E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Contracts", "Catalog.Contracts\Catalog.Contracts.csproj", "{486EB616-3322-4EF8-A7D8-BAB982AE5221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Contracts", "Catalog.Contracts\Catalog.Contracts.csproj", "{486EB616-3322-4EF8-A7D8-BAB982AE5221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Service.Test", "Catalog.Service.Test\Catalog.Service.Test.csproj", "{3C3F8989-873F-460A-B397-3145976E76BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{486EB616-3322-4EF8-A7D8-BAB982AE5221}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486EB616-3322-4EF8-A7D8-BAB982AE5221}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{486EB616-3322-4EF8-A7D8-BAB982AE5221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C3F8989-873F-460A-B397-3145976E76BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C3F8989-873F-460A-B397-3145976E76BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C3F8989-873F-460A-B397-3145976E76BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C3F8989-873F-460A-B397-3145976E76BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
