@@ -1,7 +1,6 @@
 ﻿using Catalog.Contracts;
-using Catalog.Service.Models;
 using Catalog.Service.Services;
-using MassTransit;
+using Common.Kafka;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,12 +12,12 @@ namespace Catalog.Service.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly IItemService _itemService;
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IProducerService _producerService;
 
-        public ItemsController(IItemService itemService, IPublishEndpoint publishEndpoint)
+        public ItemsController(IItemService itemService, IProducerService producerService)
         {
             _itemService = itemService;
-            _publishEndpoint = publishEndpoint;
+            _producerService = producerService;
         }
         // GET: api/<ItemsController>
         [HttpGet]
@@ -44,7 +43,7 @@ namespace Catalog.Service.Controllers
             if (item == null)
                 return BadRequest();
 
-            _publishEndpoint.Publish(new CatalogItemCreated(item.Id, item.Name, item.Description));
+            _producerService.ProduceAsync("ItemTopic", 0, new CatalogItemCreated(item.Id, item.Name, item.Description), "Create");
 
             return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
         }
@@ -60,7 +59,8 @@ namespace Catalog.Service.Controllers
             if (!updated)
                 return NotFound();
 
-            _publishEndpoint.Publish(new CatalogItemUpdated(id, value.Name, value.Description));
+            _producerService.ProduceAsync("ItemTopic", 1, new CatalogItemUpdated(id, value.Name, value.Description), "Update");
+
             return Ok(value);
         }
 
@@ -73,7 +73,8 @@ namespace Catalog.Service.Controllers
             if (!deleted)
                 return NotFound();
 
-            _publishEndpoint.Publish(new CatalogItemDeleted(id));
+            _producerService.ProduceAsync("ItemTopic", 2, new CatalogItemDeleted(id), "Delete");
+
             return NoContent();
         }
     }

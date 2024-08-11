@@ -1,21 +1,22 @@
 using Common.Data;
-using Common.MassTransit;
+using Common.Kafka;
 using Common.Repository;
 using Inventory.Service;
 using Inventory.Service.Data;
 using Inventory.Service.Models;
 using Inventory.Service.Services;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
+builder.Services.AddKafkaConsumers();  //Extention method that will registers all Consumers (that implements IConsumer<>) and Hosting Service for Consumers
+
 builder.Services.AddSqlite<InventoryDbContext>()
                 .AddRepository<InventoryItem>()
-                .AddRepository<CatalogItem>()
-                .AddMassTransitWithRabbitMQ();
+                .AddRepository<CatalogItem>();
+//.AddMassTransitWithRabbitMQ();
 
 //Cannot generalize services via extensions, because each service use different entity and different repository
 builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
